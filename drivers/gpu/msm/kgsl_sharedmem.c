@@ -593,16 +593,6 @@ _kgsl_sharedmem_page_alloc(struct kgsl_memdesc *memdesc,
 
 	align = (memdesc->flags & KGSL_MEMALIGN_MASK) >> KGSL_MEMALIGN_SHIFT;
 
-	page_size = (align >= ilog2(SZ_64K) && size >= SZ_64K)
-			? SZ_64K : PAGE_SIZE;
-
-	/*
-	 * The alignment cannot be less than the intended page size - it can be
-	 * larger however to accomodate hardware quirks
-	 */
-	if (ilog2(align) < page_size)
-		kgsl_memdesc_set_align(memdesc, ilog2(page_size));
-
 	/*
 	 * There needs to be enough room in the sg structure to be able to
 	 * service the allocation entirely with PAGE_SIZE sized chunks
